@@ -1,5 +1,6 @@
 package com.coyoapp.tinytask.exception;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(TaskNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleTaskNotFound(
       TaskNotFoundException ex, WebRequest request) {
-    ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), request.getDescription(false));
+    ErrorResponse errorResponse =
+        ErrorResponse.builder()
+            .timestamp(Instant.now())
+            .message(ex.getMessage())
+            .details(request.getDescription(false))
+            .build();
+
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
@@ -29,14 +36,25 @@ public class GlobalExceptionHandler {
     }
 
     ErrorResponse errorResponse =
-        new ErrorResponse("Validation failed", "One or more fields are invalid", fieldErrors);
+        ErrorResponse.builder()
+            .timestamp(Instant.now())
+            .message("Validation failed")
+            .details("One or more fields are invalid")
+            .fieldErrors(fieldErrors)
+            .build();
+
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
     ErrorResponse errorResponse =
-        new ErrorResponse("An unexpected error occurred", request.getDescription(false));
+        ErrorResponse.builder()
+            .timestamp(Instant.now())
+            .message("An unexpected error occurred")
+            .details(request.getDescription(false))
+            .build();
+
     return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
