@@ -2,25 +2,25 @@ package com.coyoapp.tinytask.web;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.coyoapp.tinytask.service.TaskService;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 class IndexControllerTest extends BaseControllerTest {
 
   private static final String PATH = "/";
 
+  @MockBean private TaskService taskService;
+
   @Test
   void shouldReturnIndexContent() throws Exception {
     // when
-    ResultActions actualResult = this.mockMvc.perform(get(PATH));
-
     // then
-    actualResult
-        .andDo(print())
+    mockMvc
+        .perform(get(PATH))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("Tiny Task Server is up and running.")));
   }
