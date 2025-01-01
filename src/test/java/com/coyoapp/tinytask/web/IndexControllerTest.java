@@ -1,14 +1,13 @@
 package com.coyoapp.tinytask.web;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.ResultActions;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.ResultActions;
 
 class IndexControllerTest extends BaseControllerTest {
 
@@ -21,9 +20,8 @@ class IndexControllerTest extends BaseControllerTest {
 
     // then
     actualResult
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(containsString("Tiny Task Server is up and running.")));
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("Tiny Task Server is up and running.")));
   }
-
 }

@@ -12,5 +12,4 @@ class IndexController {
   public String getIndexContent() {
     return "Tiny Task Server is up and running.";
   }
-
 }

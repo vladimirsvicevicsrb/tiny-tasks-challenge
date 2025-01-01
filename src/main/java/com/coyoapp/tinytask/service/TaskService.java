@@ -31,11 +31,12 @@ public class TaskService {
   }
 
   public List<TaskResponse> getTasks() {
-    return taskRepository.findAll()
-        .stream()
+    return taskRepository.findAll().stream()
         .map(taskMapper::toResponse)
-        .sorted(Comparator.comparing(TaskResponse::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
-            .thenComparing(TaskResponse::getName))
+        .sorted(
+            Comparator.comparing(
+                    TaskResponse::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
+                .thenComparing(TaskResponse::getName))
         .toList();
   }
 

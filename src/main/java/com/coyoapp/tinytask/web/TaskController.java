@@ -4,8 +4,8 @@ import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
 import com.coyoapp.tinytask.service.TaskService;
 import com.coyoapp.tinytask.web.api.TaskControllerAPI;
-import java.util.List;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @Slf4j
 @RestController

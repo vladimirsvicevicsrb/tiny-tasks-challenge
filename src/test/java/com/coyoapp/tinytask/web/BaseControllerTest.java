@@ -6,12 +6,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
-abstract public class BaseControllerTest {
+public abstract class BaseControllerTest {
 
-  @Autowired
-  protected ObjectMapper objectMapper;
+  @Autowired protected ObjectMapper objectMapper;
 
-  @Autowired
-  protected MockMvc mockMvc;
-
+  @Autowired protected MockMvc mockMvc;
 }
