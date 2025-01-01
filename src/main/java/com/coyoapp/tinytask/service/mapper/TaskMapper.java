@@ -12,6 +12,7 @@ public class TaskMapper {
     public Task toTask(TaskRequest request) {
         Task task = new Task();
         task.setName(request.getName());
+        task.setDueDate(request.getDueDate());
         return task;
     }
 
@@ -19,6 +20,7 @@ public class TaskMapper {
         return TaskResponse.builder()
             .id(task.getId())
             .name(task.getName())
+            .dueDate(task.getDueDate())
             .build();
     }
 

@@ -7,6 +7,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,6 +28,9 @@ public class Task {
   private String id;
 
   private String name;
+
+  @Column(name = "due_date", nullable = true)
+  private LocalDateTime dueDate;
 
   @CreatedDate
   private Instant created;
