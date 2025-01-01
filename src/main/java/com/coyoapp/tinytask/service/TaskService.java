@@ -3,6 +3,7 @@ package com.coyoapp.tinytask.service;
 import com.coyoapp.tinytask.domain.Task;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
+import com.coyoapp.tinytask.exception.TaskNotFoundException;
 import com.coyoapp.tinytask.repository.TaskRepository;
 import com.coyoapp.tinytask.service.mapper.TaskMapper;
 import jakarta.validation.Valid;
@@ -39,6 +40,10 @@ public class TaskService {
   }
 
   public void deleteTask(String taskId) {
+    if (!taskRepository.existsById(taskId)) {
+      throw new TaskNotFoundException("Task with id %s not found".formatted(taskId));
+    }
+
     taskRepository.deleteById(taskId);
   }
 }

@@ -3,6 +3,7 @@ package com.coyoapp.tinytask.web;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
 import com.coyoapp.tinytask.service.TaskService;
+import com.coyoapp.tinytask.web.api.TaskControllerAPI;
 import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
-class TaskController {
+class TaskController implements TaskControllerAPI {
 
   private final TaskService taskService;
 
@@ -31,11 +32,12 @@ class TaskController {
    * @param taskRequest The task request object containing name and due date.
    * @return The created task response object.
    */
+  @Override
   @PostMapping
   public ResponseEntity<TaskResponse> createTask(@RequestBody @Valid TaskRequest taskRequest) {
     log.debug("createTask(createTask={})", taskRequest);
     final TaskResponse task = taskService.createTask(taskRequest);
-    return ResponseEntity.ok(task);
+    return ResponseEntity.status(201).body(task);
   }
 
   /**
@@ -43,6 +45,7 @@ class TaskController {
    *
    * @return A list of task response objects.
    */
+  @Override
   @GetMapping
   public ResponseEntity<List<TaskResponse>> getTasks() {
     log.debug("getTasks()");
@@ -55,6 +58,7 @@ class TaskController {
    *
    * @param taskId The ID of the task to be deleted.
    */
+  @Override
   @DeleteMapping(path = "/{taskId}")
   public ResponseEntity<Void> deleteTask(@PathVariable String taskId) {
     log.debug("deleteTask(taskId={})", taskId);
