@@ -28,17 +28,18 @@ export class TaskFormComponent {
   taskForm: FormGroup = new FormGroup({
     name: new FormControl("", Validators.required),
     date: new FormControl(null), // Optional date field
+    time: new FormControl(null), // Optional time field
   });
 
   constructor(@Inject("TaskService") private taskService: TaskService) {}
 
   onSubmit(): void {
-    const { name, date } = this.taskForm.value;
-    const formattedDate = this.formatDateForBackend(date);
+    const { name, date, time } = this.taskForm.value;
+    const dueDate = this.formatDueDate(date, time);
 
     const taskData = {
       name,
-      dueDate: formattedDate, // Null or formatted date
+      dueDate
     };
 
     this.taskService.create(taskData).subscribe((task) => {
@@ -47,10 +48,15 @@ export class TaskFormComponent {
     });
   }
 
-  private formatDateForBackend(date: Date | null): string | null {
+  private formatDueDate(date: Date | null, time: Date | null): string | null {
     if (!date) {
       return null; // Send null if no date is selected
     }
-    return moment(date).format("YYYY-MM-DD") + "T00:00:00"; // Format as "YYYY-MM-DDT00:00:00"
+
+    const dateString = moment(date).format("YYYY-MM-DD");
+    const timeString = time ? moment(time).format("HH:mm") : "00:00";
+    const dateTime = `${dateString}T${timeString}:00`;
+
+    return dateTime; // Format as "YYYY-MM-DDT00:00:00"
   }
 }
