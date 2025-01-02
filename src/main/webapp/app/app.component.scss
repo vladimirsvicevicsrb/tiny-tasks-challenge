@@ -4,13 +4,10 @@
   width: 90vw;
   min-width: 200px;
   max-width: 600px;
-  height: 20vh;
-  min-height: 160px;
-  max-height: 240px;
 }
 
 .mat-toolbar {
-  height: auto;
+  min-height: 300px;
   background-color: #2C3645;
   font: inherit;
 

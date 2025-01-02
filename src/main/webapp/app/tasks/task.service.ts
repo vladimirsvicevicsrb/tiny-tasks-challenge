@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
-import { Task } from 'app/tasks/task';
+import { Task } from 'app/tasks/task.model';
+import { TaskRequest } from './task-request.model';
 
 /**
  * Service interface for implementations that handle tiny tasks.
@@ -20,7 +21,7 @@ export interface TaskService {
    * @param name the task's name
    * @returns an `Observable` holding the created task
    */
-  create(name: string): Observable<Task>;
+  create(taskRequest: TaskRequest): Observable<Task>;
 
   /**
    * Removes the task with the given ID from the list of tasks.
