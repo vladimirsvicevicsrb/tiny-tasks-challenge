@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class TinyTaskApplicationTest {
 
-    @Test
-    void contextLoads() {
-    }
-    
+  @Test
+  void contextLoads() {}
 }

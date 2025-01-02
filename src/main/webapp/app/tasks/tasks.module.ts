@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatTimepickerModule, MatNativeDateTimeModule } from "@dhutaryan/ngx-mat-timepicker";
 
 import { TaskFormComponent } from './task-form/task-form.component';
 import { TaskListComponent } from './task-list/task-list.component';
@@ -21,7 +22,9 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatInputModule,
         MatListModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatTimepickerModule,
+        MatNativeDateTimeModule
     ],
   exports: [TaskFormComponent, TaskListComponent],
   providers: [

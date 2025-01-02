@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = "com.coyoapp.tinytask")
-public class JpaConfig {
-}
+public class JpaConfig {}

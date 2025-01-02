@@ -9,6 +9,10 @@ spring:
     hibernate:
       ddl-auto: validate
 
+  h2:
+    console:
+      enabled: true
+
 logging:
   level:
     com.coyoapp.tinytask: DEBUG
