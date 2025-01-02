@@ -19,7 +19,3 @@ logging:
 springdoc:
   swagger-ui:
     path: /docs
-
-#server:
-#  servlet:
-#    context-path: /api
