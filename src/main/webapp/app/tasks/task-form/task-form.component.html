@@ -1,6 +1,25 @@
 <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <input type="text" formControlName="name" matInput placeholder="Add a new tiny task…" data-cy="task-input">
-    <mat-icon matSuffix aria-label="Add task"(click)="onSubmit()">send</mat-icon>
+    <mat-error *ngIf="taskForm.get('name')?.hasError('required')">
+      Task name is required
+    </mat-error>
   </mat-form-field>
+  
+  <mat-form-field>
+    <input 
+      matInput 
+      [matDatepicker]="picker" 
+      placeholder="Select due date (optional)" 
+      formControlName="date"
+      min="{{currentDate | date:'yyyy-MM-dd'}}"
+    >
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button class="task-button" type="submit" aria-label="Add task"  [disabled]="!taskForm.valid">
+    <mat-icon>send</mat-icon>
+    Add task
+  </button>
 </form>

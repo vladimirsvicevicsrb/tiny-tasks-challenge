@@ -4,8 +4,20 @@ form {
   align-items: center;
 }
 
+.task-button {
+  background: #9bbf29;
+}
+
+.task-button {
+  background: #9bbf29;
+}
+
+.task-button:disabled {
+  background: #a1a1a0;
+}
+
 .mat-form-field {
-  flex: 1;
+  min-width: 60%;
 }
 
 .mat-datepicker-toggle {
