@@ -4,12 +4,16 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnDestroy,
   Output,
 } from "@angular/core";
 
 import { Task } from "../../models/task.model";
 import { TaskFile } from "../../models/task-file.model";
 import { TaskService } from "app/tasks/services/task.service";
+import { MatDialog } from "@angular/material/dialog";
+import { TaskListItemDialogComponent } from "./task-list-item/task-list-item-dialog.component";
+import { Subscription } from "rxjs";
 
 /**
  * A list of tiny tasks.
@@ -20,12 +24,34 @@ import { TaskService } from "app/tasks/services/task.service";
   styleUrls: ["./task-list.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskListComponent {
-  @Input() tasks: Task[];
+export class TaskListComponent implements OnDestroy {
+  @Input() public tasks: Task[];
 
-  @Output() deleted: EventEmitter<Task> = new EventEmitter();
+  @Output() public deleted: EventEmitter<Task> = new EventEmitter();
 
-  constructor(@Inject("TaskService") private taskService: TaskService) {}
+  private onFileDeletedSubscription: Subscription;
+  private deleteTaskSubscription: Subscription;
+
+  constructor(
+    @Inject("TaskService") private taskService: TaskService,
+    private dialog: MatDialog
+  ) {}
+  ngOnDestroy(): void {
+    this.onFileDeletedSubscription.unsubscribe();
+    this.deleteTaskSubscription.unsubscribe();
+  }
+
+  protected openTaskDetails(task: Task): void {
+    let dialogRef = this.dialog.open(TaskListItemDialogComponent, {
+      width: "600px",
+      data: task,
+      disableClose: true,
+      autoFocus: false
+    });
+    this.onFileDeletedSubscription = dialogRef.componentInstance.onFileDeleted.subscribe(() => {
+      this.deleted.emit();
+    });
+  }
 
   protected getDueDateFormatted(dueDate: string): string {
     if (!dueDate) {
@@ -77,23 +103,13 @@ export class TaskListComponent {
   }
 
   delete(task: Task): void {
-    this.taskService.delete(task.id).subscribe(() => {
-      this.deleted.emit(task);
+    this.deleteTaskSubscription = this.taskService.delete(task.id).subscribe(() => {
+      this.deleted.emit();
     });
   }
 
   protected downloadFile(file: TaskFile): string {
     if (!file) return;
     return this.taskService.getFileDownloadUrl(file.id);
-  }
-
-  protected formatFileSize(sizeInBytes: number): string {
-    const units = ["B", "KB", "MB", "GB"];
-    let i = 0;
-    while (sizeInBytes >= 1024 && i < units.length - 1) {
-      sizeInBytes /= 1024;
-      i++;
-    }
-    return `${sizeInBytes.toFixed(2)} ${units[i]}`;
   }
 }

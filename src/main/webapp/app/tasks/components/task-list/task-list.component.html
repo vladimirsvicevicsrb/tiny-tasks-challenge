@@ -12,7 +12,10 @@
       }}
       uploaded</span
     >
-    <button mat-icon-button aria-label="Delete task" color="primary">
+    <button mat-icon-button (click)="openTaskDetails(task)" color="primary">
+      <mat-icon>info</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Delete task" color="warn">
       <mat-icon aria-label="Delete task" (click)="delete(task)"
         >delete</mat-icon
       >

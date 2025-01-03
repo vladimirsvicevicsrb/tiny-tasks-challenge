@@ -28,4 +28,9 @@ export class DefaultTaskService implements TaskService {
   getFileDownloadUrl(fileId: string): string {
     return `${this.baseUrl}/files/${fileId}/download`;
   }
+
+  deleteFile(fileId: string): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + "/files/" + fileId);
+  }
+
 }

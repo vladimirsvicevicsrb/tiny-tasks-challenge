@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  OnDestroy,
   Output,
   ViewChild,
 } from "@angular/core";
@@ -13,6 +14,7 @@ import { Task } from "app/tasks/models/task.model";
 import { TaskService } from "app/tasks/services/task.service";
 
 import * as moment from "moment";
+import { Subscription } from "rxjs";
 
 /**
  * A form to create tiny tasks.
@@ -23,16 +25,18 @@ import * as moment from "moment";
   styleUrls: ["./task-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskFormComponent {
-  @Output() created: EventEmitter<Task> = new EventEmitter();
+export class TaskFormComponent implements OnDestroy {
+  @Output() public created: EventEmitter<Task> = new EventEmitter();
 
-  @ViewChild("fileInput") fileInputElement: ElementRef;
+  @ViewChild("fileInput") public fileInputElement: ElementRef;
 
   protected currentDate: Date = new Date();
   protected selectedFiles: File[] = [];
   protected errorMessage: string;
 
-  taskForm: FormGroup = new FormGroup({
+  private createTaskSubscription: Subscription;
+  
+  protected taskForm: FormGroup = new FormGroup({
     name: new FormControl("", Validators.required),
     date: new FormControl(null), // Optional date field
     time: new FormControl(null), // Optional time field
@@ -42,6 +46,9 @@ export class TaskFormComponent {
     @Inject("TaskService") private taskService: TaskService,
     private cdr: ChangeDetectorRef
   ) {}
+  ngOnDestroy(): void {
+    this.createTaskSubscription.unsubscribe();
+  }
 
   protected onSubmit(): void {
     const formData = new FormData();
@@ -65,7 +72,7 @@ export class TaskFormComponent {
       formData.append("files", file, file.name);
     });
 
-    this.taskService.create(formData).subscribe({
+   this.createTaskSubscription = this.taskService.create(formData).subscribe({
       next: (task: Task) => {
         this.created.emit(task);
         this.taskForm.reset();

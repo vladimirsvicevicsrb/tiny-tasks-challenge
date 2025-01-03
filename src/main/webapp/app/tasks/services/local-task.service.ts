@@ -52,4 +52,9 @@ export class LocalTaskService implements TaskService {
     // not important for local test
     return "";
   }
+
+  deleteFile(fileId: string): Observable<void> {
+    // not important for local test
+    return of(null);
+  }
 }

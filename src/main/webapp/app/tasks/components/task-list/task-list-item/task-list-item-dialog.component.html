@@ -1,0 +1,66 @@
+<div class="dialog-title">
+  <h1 mat-dialog-title>Task details</h1>
+  <div mat-dialog-actions>
+    <button mat-icon-button mat-dialog-close color="warn">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-content class="dialog-content">
+  <form>
+    <mat-form-field appearance="outline" class="full-width dialog-mat-field">
+      <mat-label>Task Name</mat-label>
+      <input matInput [value]="task.name" readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width dialog-mat-field">
+      <mat-label>Due Date</mat-label>
+      <input
+        matInput
+        [value]="getFormattedDueDate(task.dueDate) || 'No Due Date'"
+        readonly
+      />
+    </mat-form-field>
+
+    <div class="custom-form-field full-width">
+      <div class="custom-label">Files</div>
+      <div class="files-container">
+        <div *ngIf="task.files && task.files.length > 0">
+          <div *ngFor="let file of task.files" class="file-item">
+            <span class="file-name"
+              >{{ file.fileName }} ({{ formatFileSize(file.fileSize) }})</span
+            >
+            <div class="file-item-actions">
+              <button
+                mat-icon-button
+                aria-label="Delete task file"
+                color="warn"
+              >
+                <mat-icon
+                  aria-label="Delete task file"
+                  (click)="deleteFile($event, file)"
+                  >delete</mat-icon
+                >
+              </button>
+
+              <button
+                mat-icon-button
+                aria-label="Download task file"
+                color="primary"
+              >
+                <mat-icon
+                  aria-label="Download task file"
+                  (click)="downloadFile($event, file)"
+                  >download</mat-icon
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!task.files || task.files.length === 0" class="no-files">
+          No files uploaded
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

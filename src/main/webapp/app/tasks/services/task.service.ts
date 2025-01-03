@@ -29,5 +29,17 @@ export interface TaskService {
    */
   delete(id: string): Observable<void>;
 
+  /**
+   * Returns the download URL for the file with the given ID.
+   * @param fileId the ID of the file
+   * @returns the download URL
+   */
   getFileDownloadUrl(fileId: string): string;
+
+  /**
+   * Deletes the file with the given ID.
+   * @param fileId the ID of the file
+   * @returns an empty `Observable`
+   */
+  deleteFile(fileId: string): Observable<void>;
 }

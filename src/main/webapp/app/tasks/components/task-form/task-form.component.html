@@ -4,8 +4,9 @@
       type="text"
       formControlName="name"
       matInput
-      placeholder="Add a new tiny task…"
+      placeholder="Enter the task name"
       data-cy="task-input"
+      required
     />
     <mat-error *ngIf="taskForm.get('name')?.hasError('required')">
       Task name is required
@@ -16,7 +17,7 @@
     <input
       matInput
       [matDatepicker]="picker"
-      placeholder="Select date (optional)"
+      placeholder="Select date"
       formControlName="date"
       min="{{ currentDate | date : 'yyyy-MM-dd' }}"
     />
@@ -25,7 +26,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Select time (optional)</mat-label>
+    <mat-label>Select time</mat-label>
     <input
       type="text"
       matInput
