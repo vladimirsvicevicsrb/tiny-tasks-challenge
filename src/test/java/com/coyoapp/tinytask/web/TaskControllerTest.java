@@ -112,7 +112,7 @@ class TaskControllerTest extends BaseControllerTest {
             .dueDate(givenDueDate)
             .build();
 
-    when(taskService.createTask(taskRequest)).thenReturn(taskResponse);
+    when(taskService.createTask(taskRequest, null)).thenReturn(taskResponse);
 
     // when
     // then

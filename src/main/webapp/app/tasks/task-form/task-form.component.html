@@ -1,4 +1,4 @@
-<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="taskForm">
   <mat-form-field>
     <input
       type="text"
@@ -26,14 +26,27 @@
 
   <mat-form-field>
     <mat-label>Select time (optional)</mat-label>
-    <input 
-    type="text" 
-    matInput 
-    [matTimepicker]="timepicker"
-    formControlName="time" />
+    <input
+      type="text"
+      matInput
+      [matTimepicker]="timepicker"
+      formControlName="time"
+    />
     <mat-timepicker-toggle matSuffix [for]="timepicker"></mat-timepicker-toggle>
     <mat-timepicker #timepicker></mat-timepicker>
   </mat-form-field>
+
+  <input
+    type="file"
+    multiple
+    #fileInput
+    (change)="onFilesSelected($event)"
+  />
+
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon>
+    {{ errorMessage }}
+  </div>
 
   <button
     mat-raised-button
@@ -41,8 +54,9 @@
     type="submit"
     aria-label="Add task"
     [disabled]="!taskForm.valid"
+    (click)="onSubmit()"
   >
-    <mat-icon>send</mat-icon>
+    <mat-icon>add</mat-icon>
     Add task
   </button>
 </form>

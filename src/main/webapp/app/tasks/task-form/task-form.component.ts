@@ -1,14 +1,17 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Inject,
   Output,
+  ViewChild,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import * as moment from "moment";
-import { Task } from "../task.model";
+import { Task } from "../models/task.model";
 import { TaskService } from "../task.service";
 
 /**
@@ -23,7 +26,11 @@ import { TaskService } from "../task.service";
 export class TaskFormComponent {
   @Output() created: EventEmitter<Task> = new EventEmitter();
 
+  @ViewChild("fileInput") fileInputElement: ElementRef;
+
   protected currentDate: Date = new Date();
+  protected selectedFiles: File[] = [];
+  protected errorMessage: string;
 
   taskForm: FormGroup = new FormGroup({
     name: new FormControl("", Validators.required),
@@ -31,21 +38,52 @@ export class TaskFormComponent {
     time: new FormControl(null), // Optional time field
   });
 
-  constructor(@Inject("TaskService") private taskService: TaskService) {}
+  constructor(
+    @Inject("TaskService") private taskService: TaskService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  onSubmit(): void {
+  protected onSubmit(): void {
+    const formData = new FormData();
+
     const { name, date, time } = this.taskForm.value;
     const dueDate = this.formatDueDate(date, time);
 
     const taskData = {
       name,
-      dueDate
+      dueDate,
     };
 
-    this.taskService.create(taskData).subscribe((task) => {
-      this.created.emit(task);
-      this.taskForm.reset();
+    formData.append(
+      "taskRequest",
+      new Blob([JSON.stringify(taskData)], {
+        type: "application/json",
+      })
+    );
+
+    Array.from(this.selectedFiles).forEach((file) => {
+      formData.append("files", file, file.name);
     });
+
+    this.taskService.create(formData).subscribe({
+      next: (task) => {
+        this.created.emit(task);
+        this.taskForm.reset();
+        this.selectedFiles = [];
+        this.fileInputElement.nativeElement.value = "";
+      },
+      error: (err) => {
+        this.errorMessage = err.error.message;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  protected onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+    }
   }
 
   private formatDueDate(date: Date | null, time: Date | null): string | null {

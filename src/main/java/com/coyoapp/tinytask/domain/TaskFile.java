@@ -1,31 +1,29 @@
 package com.coyoapp.tinytask.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Table(name = "task")
+@Table(name = "task_file")
 @Entity
 @Setter
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class Task {
+public class TaskFile {
 
   @Id
   @GeneratedValue(generator = "uuid2")
@@ -33,14 +31,21 @@ public class Task {
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
 
-  private String name;
+  @JsonBackReference
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "task_id", nullable = false)
+  private Task task;
 
-  @Column(name = "due_date", nullable = true)
-  private LocalDateTime dueDate;
+  private String fileName;
 
-  @JsonManagedReference
-  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<TaskFile> files = new HashSet<>();
+  private String fileType;
 
-  @CreatedDate private Instant created;
+  private Long fileSize;
+
+  @Lob
+  private byte[] fileContent;
+
+  @CreatedDate
+  private Instant created;
+
 }

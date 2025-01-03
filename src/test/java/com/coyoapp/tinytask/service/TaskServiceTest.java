@@ -50,7 +50,7 @@ class TaskServiceTest {
         .thenReturn(savedTask);
 
     // when
-    var response = taskService.createTask(taskRequest);
+    var response = taskService.createTask(taskRequest, null);
 
     // then
     assertEquals(taskId, response.getId());

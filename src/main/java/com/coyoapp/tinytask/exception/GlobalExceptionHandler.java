@@ -3,6 +3,7 @@ package com.coyoapp.tinytask.exception;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(TaskNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleTaskNotFound(
-      TaskNotFoundException ex, WebRequest request) {
+  @ExceptionHandler({TaskNotFoundException.class, TaskFileNotFoundException.class})
+  public ResponseEntity<ErrorResponse> handleNotFoundExceptions(
+      RuntimeException ex, WebRequest request) {
     ErrorResponse errorResponse =
         ErrorResponse.builder()
             .timestamp(Instant.now())
@@ -25,6 +27,32 @@ public class GlobalExceptionHandler {
             .build();
 
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(TaskFileUploadFailedException.class)
+  public ResponseEntity<ErrorResponse> handleTaskFileUploadFailedException(
+      TaskFileUploadFailedException ex, WebRequest request) {
+    ErrorResponse errorResponse =
+        ErrorResponse.builder()
+            .timestamp(Instant.now())
+            .message(ex.getMessage())
+            .details(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(
+      MaxUploadSizeExceededException ex, WebRequest request) {
+    ErrorResponse errorResponse =
+        ErrorResponse.builder()
+            .timestamp(Instant.now())
+            .message(ex.getMessage())
+            .details(request.getDescription(false))
+            .build();
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

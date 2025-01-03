@@ -2,6 +2,7 @@ package com.coyoapp.tinytask.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,6 @@ public class TaskResponse {
   /** Due date of the task. */
   @Schema(description = "Due date of the task", type = "string", example = "2025-02-01T13:00:00")
   private LocalDateTime dueDate;
+
+  private Set<TaskFileResponse> files;
 }

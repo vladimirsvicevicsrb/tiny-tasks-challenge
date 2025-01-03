@@ -8,10 +8,6 @@ form {
   background: #9bbf29;
 }
 
-.task-button {
-  background: #9bbf29;
-}
-
 .task-button:disabled {
   background: #a1a1a0;
 }
@@ -30,4 +26,34 @@ form {
 
 .mat-hint {
   color: white;
+}
+
+input[type=file] {
+  cursor: pointer;
+}
+
+input[type=file]::file-selector-button {
+  background: #9bbf29;
+  color: white;
+  border: none;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message mat-icon {
+  margin-right: 4px;
+  font-size: 20px;
 }
