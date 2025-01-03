@@ -10,8 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { BASE_URL } from './app.tokens';
-import { DefaultTaskService } from './tasks/default-task.service';
-import { LocalTaskService } from './tasks/local-task.service';
+import { DefaultTaskService } from './tasks/services/default-task.service';
+import { LocalTaskService } from './tasks/services/local-task.service';
 import { TasksModule } from './tasks/tasks.module';
 
 @NgModule({

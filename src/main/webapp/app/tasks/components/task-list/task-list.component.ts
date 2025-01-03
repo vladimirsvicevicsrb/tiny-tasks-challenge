@@ -7,9 +7,9 @@ import {
   Output,
 } from "@angular/core";
 
-import { Task } from "../models/task.model";
-import { TaskService } from "../task.service";
-import { TaskFile } from "../models/task-file.model";
+import { Task } from "../../models/task.model";
+import { TaskFile } from "../../models/task-file.model";
+import { TaskService } from "app/tasks/services/task.service";
 
 /**
  * A list of tiny tasks.

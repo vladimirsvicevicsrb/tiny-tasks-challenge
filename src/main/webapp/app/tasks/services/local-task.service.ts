@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { v4 as uuid } from "uuid";
 
-import { Task } from "./models/task.model";
 import { TaskService } from "./task.service";
-import { TaskRequest } from "./models/task-request.model";
+import { TaskRequest } from "../models/task-request.model";
+import { Task } from "../models/task.model";
 
 @Injectable()
 export class LocalTaskService implements TaskService {

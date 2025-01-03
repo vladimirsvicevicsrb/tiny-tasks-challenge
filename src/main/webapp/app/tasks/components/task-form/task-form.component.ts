@@ -9,10 +9,10 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Task } from "app/tasks/models/task.model";
+import { TaskService } from "app/tasks/services/task.service";
 
 import * as moment from "moment";
-import { Task } from "../models/task.model";
-import { TaskService } from "../task.service";
 
 /**
  * A form to create tiny tasks.
@@ -66,7 +66,7 @@ export class TaskFormComponent {
     });
 
     this.taskService.create(formData).subscribe({
-      next: (task) => {
+      next: (task: Task) => {
         this.created.emit(task);
         this.taskForm.reset();
         this.selectedFiles = [];
