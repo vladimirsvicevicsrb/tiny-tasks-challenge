@@ -86,11 +86,21 @@ class TaskController implements TaskControllerAPI {
   @Override
   @GetMapping("/tasks/{taskId}/files")
   public ResponseEntity<Set<TaskFileResponse>> getFilesForTask(@PathVariable String taskId) {
+    log.debug("getFilesForTask(taskId={})", taskId);
     return ResponseEntity.ok(taskFileService.getFilesByTaskId(taskId));
   }
 
+  /**
+   * Downloads a file by its ID.
+   *
+   * @param fileId The ID of the file to be downloaded.
+   * @return The downloaded file as an InputStreamResource.
+   */
+  @Override
   @GetMapping("files/{fileId}/download")
   public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileId) {
+    log.debug("downloadFile(fileId={})", fileId);
+
     final TaskFile taskFile = taskFileService.getFileById(fileId);
 
     final HttpHeaders headers = new HttpHeaders();
@@ -101,5 +111,18 @@ class TaskController implements TaskControllerAPI {
     return ResponseEntity.status(HttpStatus.OK)
         .headers(headers)
         .body(new InputStreamResource(new ByteArrayInputStream(taskFile.getFileContent())));
+  }
+
+  /**
+   * Deletes a file by its ID.
+   *
+   * @param fileId The ID of the file to be deleted.
+   */
+  @Override
+  @DeleteMapping("files/{fileId}")
+  public ResponseEntity<Void> deleteFile(@PathVariable String fileId) {
+    log.debug("deleteFile(fileId={})", fileId);
+    taskFileService.deleteFile(fileId);
+    return ResponseEntity.noContent().build();
   }
 }

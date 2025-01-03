@@ -67,4 +67,12 @@ public class TaskFileService {
         .orElseThrow(
             () -> new TaskFileNotFoundException("File with id %s not found".formatted(fileId)));
   }
+
+  public void deleteFile(String fileId) {
+    if (!taskFileRepository.existsById(fileId)) {
+      throw new TaskFileNotFoundException("File with id %s not found".formatted(fileId));
+    }
+
+    taskFileRepository.deleteById(fileId);
+  }
 }

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import java.util.Set;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
@@ -115,4 +116,60 @@ public interface TaskControllerAPI {
       })
   @Parameter(name = "taskId", description = "ID of the task to retrieve files for")
   ResponseEntity<Set<TaskFileResponse>> getFilesForTask(@PathVariable String taskId);
+
+  @Operation(
+      summary = "Download a file",
+      description = "Downloads a file by its ID.",
+      responses = {
+        @ApiResponse(responseCode = "200", description = "File downloaded successfully"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "File not found",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class),
+                    examples = {
+                      @ExampleObject(
+                          value =
+                              """
+                          {
+                              "timestamp": "2025-01-01T11:21:42.426105Z",
+                              "message": "File with id 0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58 not found",
+                              "details": "uri=/files/0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58",
+                              "fieldErrors": null
+                          }
+                          """)
+                    }))
+      })
+  @Parameter(name = "fileId", description = "ID of the file to be downloaded")
+  ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileId);
+
+  @Operation(
+      summary = "Delete a file",
+      description = "Deletes a file by its ID.",
+      responses = {
+        @ApiResponse(responseCode = "204", description = "File deleted successfully"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "File not found",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class),
+                    examples = {
+                      @ExampleObject(
+                          value =
+                              """
+                          {
+                              "timestamp": "2025-01-01T11:21:42.426105Z",
+                              "message": "File with id 0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58 not found",
+                              "details": "uri=/files/0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58",
+                              "fieldErrors": null
+                          }
+                          """)
+                    }))
+      })
+  @Parameter(name = "fileId", description = "ID of the file to be deleted")
+  ResponseEntity<Void> deleteFile(@PathVariable String fileId);
 }

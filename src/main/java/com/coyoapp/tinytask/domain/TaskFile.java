@@ -42,10 +42,7 @@ public class TaskFile {
 
   private Long fileSize;
 
-  @Lob
-  private byte[] fileContent;
+  @Lob private byte[] fileContent;
 
-  @CreatedDate
-  private Instant created;
-
+  @CreatedDate private Instant created;
 }

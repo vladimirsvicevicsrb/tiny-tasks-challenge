@@ -1,10 +1,8 @@
 package com.coyoapp.tinytask.service.mapper;
 
 import com.coyoapp.tinytask.domain.Task;
-import com.coyoapp.tinytask.domain.TaskFile;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

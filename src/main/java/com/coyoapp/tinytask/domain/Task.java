@@ -39,7 +39,11 @@ public class Task {
   private LocalDateTime dueDate;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "task",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private Set<TaskFile> files = new HashSet<>();
 
   @CreatedDate private Instant created;
