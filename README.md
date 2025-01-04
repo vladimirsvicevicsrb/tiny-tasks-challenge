@@ -12,12 +12,12 @@ very limited set of features. Fortunately, you are here to save the day and impl
     sdk install java 17-open
     ```
 
-- The right version of node (lts/erbium) and yarn
+- The right version of node (v14.15.0) and yarn
   - Use e.g. [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm) and run
 
     ```bash
-    nvm install lts/erbium
-    nvm use lts/erbium
+    nvm install v14.15.0
+    nvm use v14.15.0
     npm install -g yarn
     yarn --version
     
