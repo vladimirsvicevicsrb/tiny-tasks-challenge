@@ -28,7 +28,7 @@ class TaskServiceTest {
       new TaskService(taskRepository, taskMapper, taskFileService);
 
   @Test
-  public void testCreateTask_success() {
+  void testCreateTask_success() {
     // given
     var taskId = UUID.randomUUID().toString();
     var taskName = "Test Task";
@@ -57,7 +57,7 @@ class TaskServiceTest {
   }
 
   @Test
-  public void testDeleteTask_notFound() {
+  void testDeleteTask_notFound() {
     // given
     var taskId = UUID.randomUUID().toString();
 

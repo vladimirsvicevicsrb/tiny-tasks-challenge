@@ -6,19 +6,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.coyoapp.tinytask.domain.TaskFile;
 import com.coyoapp.tinytask.dto.TaskFileResponse;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
 import com.coyoapp.tinytask.service.TaskFileService;
 import com.coyoapp.tinytask.service.TaskService;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -206,6 +210,102 @@ class TaskControllerTest extends BaseControllerTest {
     // when
     // then
     mockMvc.perform(delete(PATH + "/{taskId}", taskId)).andExpect(status().isNoContent());
+  }
+
+  @Test
+  void shouldReturnFilesForTask() throws Exception {
+    // given
+    var taskId = UUID.randomUUID().toString();
+    var file1 =
+        TaskFileResponse.builder()
+            .id(UUID.randomUUID().toString())
+            .taskId(taskId)
+            .fileName("file1.txt")
+            .fileType("text/plain")
+            .fileSize(1024L)
+            .build();
+    var file2 =
+        TaskFileResponse.builder()
+            .id(UUID.randomUUID().toString())
+            .taskId(taskId)
+            .fileName("file2.pdf")
+            .fileType("application/pdf")
+            .fileSize(2048L)
+            .build();
+
+    var taskFiles =
+        new LinkedHashSet<TaskFileResponse>() {
+          {
+            add(file1);
+            add(file2);
+          }
+        };
+
+    when(taskFileService.getFilesByTaskId(taskId)).thenReturn(taskFiles);
+
+    // expected JSON response
+    String expectedJson =
+        """
+          [
+              {
+                  "id": "%s",
+                  "taskId": "%s",
+                  "fileName": "file1.txt",
+                  "fileType": "text/plain",
+                  "fileSize": 1024
+              },
+              {
+                  "id": "%s",
+                  "taskId": "%s",
+                  "fileName": "file2.pdf",
+                  "fileType": "application/pdf",
+                  "fileSize": 2048
+              }
+          ]
+        """
+            .formatted(file1.getId(), taskId, file2.getId(), taskId);
+
+    // when
+    // then
+    mockMvc
+        .perform(get(PATH + "/{taskId}/files", taskId).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectedJson, true));
+  }
+
+  @Test
+  void shouldDownloadFile() throws Exception {
+    // given
+    var fileId = UUID.randomUUID().toString();
+    var taskFile = new TaskFile();
+    taskFile.setId(fileId);
+    taskFile.setFileName("file1.txt");
+    taskFile.setFileType("text/plain");
+    taskFile.setFileContent("file content".getBytes());
+
+    when(taskFileService.getFileById(fileId)).thenReturn(taskFile);
+
+    // when
+    // then
+    mockMvc
+        .perform(get("/files/{fileId}/download", fileId))
+        .andExpect(status().isOk())
+        .andExpect(
+            header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"file1.txt\""))
+        .andExpect(header().string(HttpHeaders.CONTENT_TYPE, "text/plain"))
+        .andExpect(content().bytes(taskFile.getFileContent()));
+  }
+
+  @Test
+  void shouldDeleteFile() throws Exception {
+    // given
+    var fileId = UUID.randomUUID().toString();
+
+    doNothing().when(taskFileService).deleteFile(fileId);
+
+    // when
+    // then
+    mockMvc.perform(delete("/files/{fileId}", fileId)).andExpect(status().isNoContent());
   }
 
   private TaskRequest createTaskRequest(String name, LocalDateTime dueDate) {

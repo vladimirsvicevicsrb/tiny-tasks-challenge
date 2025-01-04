@@ -19,7 +19,7 @@ class TaskMapperTest {
   private final TaskMapper taskMapper = new TaskMapper(taskFileMapper);
 
   @Test
-  public void testToTask_shouldMapRequestToTask() {
+  void testToTask_shouldMapRequestToTask() {
     // given
     var request =
         TaskRequest.builder().name("Test Task").dueDate(LocalDateTime.now().plusDays(1)).build();
@@ -34,7 +34,7 @@ class TaskMapperTest {
   }
 
   @Test
-  public void testToResponse_shouldMapTaskToResponse() {
+  void testToResponse_shouldMapTaskToResponse() {
     // given
     final Task task = createTaskWithFiles();
 
