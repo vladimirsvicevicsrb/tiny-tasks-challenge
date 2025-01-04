@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
-import { TaskService } from './tasks/task.service';
+import { TaskService } from './tasks/services/task.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;

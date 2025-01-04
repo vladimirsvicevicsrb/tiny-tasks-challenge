@@ -29,8 +29,8 @@ export class TaskListComponent implements OnDestroy {
 
   @Output() public deleted: EventEmitter<Task> = new EventEmitter();
 
-  private onFileDeletedSubscription: Subscription;
-  private deleteTaskSubscription: Subscription;
+  onFileDeletedSubscription: Subscription;
+  deleteTaskSubscription: Subscription;
 
   constructor(
     @Inject("TaskService") private taskService: TaskService,
@@ -104,7 +104,7 @@ export class TaskListComponent implements OnDestroy {
 
   delete(task: Task): void {
     this.deleteTaskSubscription = this.taskService.delete(task.id).subscribe(() => {
-      this.deleted.emit();
+      this.deleted.emit(task);
     });
   }
 

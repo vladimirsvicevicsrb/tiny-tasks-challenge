@@ -34,9 +34,9 @@ export class TaskFormComponent implements OnDestroy {
   protected selectedFiles: File[] = [];
   protected errorMessage: string;
 
-  private createTaskSubscription: Subscription;
+  createTaskSubscription: Subscription;
   
-  protected taskForm: FormGroup = new FormGroup({
+  taskForm: FormGroup = new FormGroup({
     name: new FormControl("", Validators.required),
     date: new FormControl(null), // Optional date field
     time: new FormControl(null), // Optional time field
@@ -50,7 +50,7 @@ export class TaskFormComponent implements OnDestroy {
     this.createTaskSubscription.unsubscribe();
   }
 
-  protected onSubmit(): void {
+  onSubmit(): void {
     const formData = new FormData();
 
     const { name, date, time } = this.taskForm.value;

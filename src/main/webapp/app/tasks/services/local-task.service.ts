@@ -8,25 +8,44 @@ import { Task } from "../models/task.model";
 
 @Injectable()
 export class LocalTaskService implements TaskService {
-  private static readonly STORAGE_KEY: string = "tiny.tasks";
+  public static readonly STORAGE_KEY: string = "tiny.tasks";
 
   getAll(): Observable<Task[]> {
     return of(this.readTasks());
   }
 
   create(formData: FormData): Observable<Task> {
-    const taskRequestObj = formData.get("taskRequest") as string;
-    const taskRequest: TaskRequest = JSON.parse(taskRequestObj);
+    const taskRequestBlob = formData.get("taskRequest") as Blob;
 
-    const tasks = this.readTasks();
-    const task = {
-      id: uuid(),
-      name: taskRequest.name,
-      dueDate: taskRequest.dueDate,
-    };
-    tasks.push(task);
-    this.writeTasks(tasks);
-    return of(task);
+    if (!taskRequestBlob) {
+      throw new Error("No taskRequest data found in FormData");
+    }
+
+    return new Observable<Task>((observer) => {
+      taskRequestBlob
+        .text()
+        .then((text) => {
+          const taskRequest: TaskRequest = JSON.parse(text);
+
+          const tasks = this.readTasks();
+          const task: Task = {
+            id: uuid(),
+            name: taskRequest.name,
+            dueDate: taskRequest.dueDate,
+          };
+
+          tasks.push(task);
+          this.writeTasks(tasks);
+
+          observer.next(task);
+          observer.complete();
+        })
+        .catch((err) => {
+          observer.error(
+            new Error(`Failed to process taskRequest: ${err.message}`)
+          );
+        });
+    });
   }
 
   delete(id: string): Observable<void> {

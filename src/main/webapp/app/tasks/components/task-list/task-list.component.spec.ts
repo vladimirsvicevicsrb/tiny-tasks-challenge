@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 
 import { TaskListComponent } from './task-list.component';
 import { TaskService } from 'app/tasks/services/task.service';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -13,6 +14,7 @@ describe('TaskListComponent', () => {
     taskService = jasmine.createSpyObj('taskService', ['delete']);
     TestBed.configureTestingModule({
       declarations: [TaskListComponent],
+      imports: [MatDialogModule],
       providers: [{
         provide: 'TaskService',
         useValue: taskService

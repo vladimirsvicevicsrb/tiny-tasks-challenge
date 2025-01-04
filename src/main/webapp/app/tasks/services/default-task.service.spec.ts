@@ -27,8 +27,23 @@ describe('DefaultTaskService', () => {
   });
 
   it('should post task', () => {
+    // given
+    const formData = new FormData();
+
+    const taskData = {
+      name: 'Drinking the drink!'
+    };
+
+    formData.append(
+      "taskRequest",
+      new Blob([JSON.stringify(taskData)], {
+        type: "application/json",
+      })
+    );
+    
+
     // when
-    taskService.create('Drinking the drink!').subscribe();
+    taskService.create(formData).subscribe();
 
     // then
     const req = httpTestingController.expectOne(request => request.url === 'http://backend.tld/tasks');
