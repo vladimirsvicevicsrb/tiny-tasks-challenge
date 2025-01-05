@@ -4,6 +4,7 @@ import com.coyoapp.tinytask.domain.TaskFile;
 import com.coyoapp.tinytask.dto.TaskFileResponse;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
+import com.coyoapp.tinytask.logging.Timed;
 import com.coyoapp.tinytask.service.TaskFileService;
 import com.coyoapp.tinytask.service.TaskService;
 import com.coyoapp.tinytask.web.api.TaskControllerAPI;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
+@Timed
 @RestController
 @RequiredArgsConstructor
 class TaskController implements TaskControllerAPI {
