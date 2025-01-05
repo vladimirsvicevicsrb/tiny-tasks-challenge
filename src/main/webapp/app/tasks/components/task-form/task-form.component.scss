@@ -1,0 +1,71 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-button {
+  background: #9bbf29;
+  transition: background 0.3s ease;
+}
+
+.task-button:hover {
+  background: #7a9c1d;
+}
+
+.task-button:disabled {
+  background: #a1a1a0;
+  cursor: not-allowed;
+}
+
+.mat-form-field {
+  min-width: 60%;
+}
+
+.mat-datepicker-toggle {
+  color: white;
+}
+
+.mat-icon {
+  cursor: pointer;
+}
+
+.mat-hint {
+  color: white;
+}
+
+input[type=file] {
+  cursor: pointer;
+}
+
+input[type=file]::file-selector-button {
+  background: #9bbf29;
+  color: white;
+  border: none;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 16px;
+  transition: background 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #7a9c1d;
+  cursor: pointer;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message mat-icon {
+  margin-right: 4px;
+  font-size: 20px;
+}

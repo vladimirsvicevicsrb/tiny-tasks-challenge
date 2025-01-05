@@ -1,13 +1,11 @@
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 
-import { Task } from 'app/tasks/task.model';
-import { TaskRequest } from './task-request.model';
+import { Task } from "app/tasks/models/task.model";
 
 /**
  * Service interface for implementations that handle tiny tasks.
  */
 export interface TaskService {
-
   /**
    * Returns the list of all tasks.
    *
@@ -21,7 +19,7 @@ export interface TaskService {
    * @param name the task's name
    * @returns an `Observable` holding the created task
    */
-  create(taskRequest: TaskRequest): Observable<Task>;
+  create(formData: FormData): Observable<Task>;
 
   /**
    * Removes the task with the given ID from the list of tasks.
@@ -30,4 +28,18 @@ export interface TaskService {
    * @returns an empty `Observable`
    */
   delete(id: string): Observable<void>;
+
+  /**
+   * Returns the download URL for the file with the given ID.
+   * @param fileId the ID of the file
+   * @returns the download URL
+   */
+  getFileDownloadUrl(fileId: string): string;
+
+  /**
+   * Deletes the file with the given ID.
+   * @param fileId the ID of the file
+   * @returns an empty `Observable`
+   */
+  deleteFile(fileId: string): Observable<void>;
 }

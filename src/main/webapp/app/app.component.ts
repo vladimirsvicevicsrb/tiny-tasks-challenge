@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Task } from './tasks/task.model';
-import { TaskService } from './tasks/task.service';
+import { Task } from './tasks/models/task.model';
+import { TaskService } from './tasks/services/task.service';
 
 @Component({
   selector: 'tiny-root',

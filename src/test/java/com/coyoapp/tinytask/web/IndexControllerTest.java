@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.coyoapp.tinytask.service.TaskFileService;
 import com.coyoapp.tinytask.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,6 +15,7 @@ class IndexControllerTest extends BaseControllerTest {
   private static final String PATH = "/";
 
   @MockBean private TaskService taskService;
+  @MockBean private TaskFileService taskFileService;
 
   @Test
   void shouldReturnIndexContent() throws Exception {

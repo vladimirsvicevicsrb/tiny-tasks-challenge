@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -20,18 +21,24 @@ public class TaskService {
 
   private final TaskRepository taskRepository;
   private final TaskMapper taskMapper;
+  private final TaskFileService taskFileService;
 
   /**
    * Creates a new task and persists it to the database.
    *
    * @param taskRequest The task request object
+   * @param files The files to be attached to the task
    * @return The created task response object
    */
-  public TaskResponse createTask(@Valid TaskRequest taskRequest) {
+  public TaskResponse createTask(@Valid TaskRequest taskRequest, List<MultipartFile> files) {
     log.debug("creating task: {}", taskRequest);
     final Task taskToSave = taskMapper.toTask(taskRequest);
-    final Task savedTask = taskRepository.save(taskToSave);
+
+    Task savedTask = taskRepository.save(taskToSave);
     log.debug("created task: {}", savedTask);
+
+    savedTask = taskFileService.uploadFiles(savedTask, files);
+    log.debug("uploaded files for task: {}", savedTask);
 
     return taskMapper.toResponse(savedTask);
   }

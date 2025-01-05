@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { TaskService } from '../task.service';
 import { TaskListComponent } from './task-list.component';
+import { TaskService } from 'app/tasks/services/task.service';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -13,6 +14,7 @@ describe('TaskListComponent', () => {
     taskService = jasmine.createSpyObj('taskService', ['delete']);
     TestBed.configureTestingModule({
       declarations: [TaskListComponent],
+      imports: [MatDialogModule],
       providers: [{
         provide: 'TaskService',
         useValue: taskService

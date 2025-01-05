@@ -1,0 +1,24 @@
+<mat-list data-cy="task-list">
+  <mat-list-item *ngFor="let task of tasks" class="mat-elevation-z1">
+    <mat-icon mat-list-icon>assignment</mat-icon>
+    <h4 mat-line>{{ task.name }}</h4>
+
+    <span mat-line class="due-date">{{
+      getDueDateFormatted(task.dueDate)
+    }}</span>
+    <span class="files-uploaded" mat-line
+      >{{ task.files.length }} file{{
+        task.files.length > 1 ? "s" : ""
+      }}
+      uploaded</span
+    >
+    <button mat-icon-button (click)="openTaskDetails(task)" color="primary">
+      <mat-icon>info</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Delete task" color="warn">
+      <mat-icon aria-label="Delete task" (click)="delete(task)"
+        >delete</mat-icon
+      >
+    </button>
+  </mat-list-item>
+</mat-list>
