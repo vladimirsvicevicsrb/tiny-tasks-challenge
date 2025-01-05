@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
+@Timed
 @RestController
 @RequiredArgsConstructor
 class TaskController implements TaskControllerAPI {
@@ -43,7 +44,6 @@ class TaskController implements TaskControllerAPI {
    * @return The created task response object.
    */
   @Override
-  @Timed
   @PostMapping(value = "/tasks", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<TaskResponse> createTask(
       @RequestPart(name = "taskRequest") @Valid TaskRequest taskRequest,
@@ -59,7 +59,6 @@ class TaskController implements TaskControllerAPI {
    * @return A list of task response objects.
    */
   @Override
-  @Timed
   @GetMapping("/tasks")
   public ResponseEntity<List<TaskResponse>> getTasks() {
     log.debug("getTasks()");
@@ -73,7 +72,6 @@ class TaskController implements TaskControllerAPI {
    * @param taskId The ID of the task to be deleted.
    */
   @Override
-  @Timed
   @DeleteMapping(path = "/tasks/{taskId}")
   public ResponseEntity<Void> deleteTask(@PathVariable String taskId) {
     log.debug("deleteTask(taskId={})", taskId);
@@ -88,7 +86,6 @@ class TaskController implements TaskControllerAPI {
    * @return A list of files associated with the task.
    */
   @Override
-  @Timed
   @GetMapping("/tasks/{taskId}/files")
   public ResponseEntity<Set<TaskFileResponse>> getFilesForTask(@PathVariable String taskId) {
     log.debug("getFilesForTask(taskId={})", taskId);
@@ -102,7 +99,6 @@ class TaskController implements TaskControllerAPI {
    * @return The downloaded file as an InputStreamResource.
    */
   @Override
-  @Timed
   @GetMapping("files/{fileId}/download")
   public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileId) {
     log.debug("downloadFile(fileId={})", fileId);
@@ -125,7 +121,6 @@ class TaskController implements TaskControllerAPI {
    * @param fileId The ID of the file to be deleted.
    */
   @Override
-  @Timed
   @DeleteMapping("files/{fileId}")
   public ResponseEntity<Void> deleteFile(@PathVariable String fileId) {
     log.debug("deleteFile(fileId={})", fileId);

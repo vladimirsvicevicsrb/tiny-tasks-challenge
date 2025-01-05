@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -12,16 +13,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
+  @Pointcut("@annotation(com.coyoapp.tinytask.logging.Timed)")
+  public void timedMethod() {}
+
+  @Pointcut("within(@com.coyoapp.tinytask.logging.Timed *)")
+  public void timedClass() {}
+
+  // Pointcut for methods annotated with @Mapping annotations
+  @Pointcut(
+      "@annotation(org.springframework.web.bind.annotation.GetMapping) || "
+          + "@annotation(org.springframework.web.bind.annotation.PostMapping) || "
+          + "@annotation(org.springframework.web.bind.annotation.PutMapping) || "
+          + "@annotation(org.springframework.web.bind.annotation.DeleteMapping) || "
+          + "@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+  public void mappingAnnotations() {}
+
+  @Pointcut("(timedMethod() || timedClass()) && mappingAnnotations()")
+  public void timedEndpoints() {}
+
   /**
-   * Log the execution time of a method annotated with {@link Timed}.
+   * Aspect that logs the execution time of all methods annotated with @Timed or enclosed in a class
+   * annotated with @Timed.
    *
-   * <p>This aspect logs the execution time of the method, in milliseconds.
+   * <p>This aspect will log the execution time of all methods annotated with @Timed, as well as all
+   * methods in classes annotated with @Timed. The execution time is logged as an INFO message.
    *
-   * @param joinPoint the annotated method
-   * @return the result of the method execution
-   * @throws Throwable if the method execution fails
+   * @param joinPoint the join point representing the method invocation
+   * @return the result of the method invocation
+   * @throws Throwable if any errors occur during method invocation
    */
-  @Around("@annotation(com.coyoapp.tinytask.logging.Timed)")
+  @Around("timedEndpoints()")
   public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
     // Extract class and method names
     String className = joinPoint.getTarget().getClass().getSimpleName();
