@@ -35,10 +35,10 @@ public class TaskService {
     final Task taskToSave = taskMapper.toTask(taskRequest);
 
     Task savedTask = taskRepository.save(taskToSave);
-    log.debug("created task: {}", savedTask);
+    log.debug("created task: {}", savedTask.getName());
 
     savedTask = taskFileService.uploadFiles(savedTask, files);
-    log.debug("uploaded files for task: {}", savedTask);
+    log.debug("uploaded files for task: {}", savedTask.getName());
 
     return taskMapper.toResponse(savedTask);
   }
