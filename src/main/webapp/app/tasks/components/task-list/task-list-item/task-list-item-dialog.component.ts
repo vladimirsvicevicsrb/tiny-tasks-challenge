@@ -60,6 +60,6 @@ export class TaskListItemDialogComponent {
   }
 
   protected getFormattedDueDate(dueDate: string): string {
-    return moment(dueDate).format('llll');
+    return dueDate ? moment(dueDate).format('llll') : "No Due Date";
   }
 }
