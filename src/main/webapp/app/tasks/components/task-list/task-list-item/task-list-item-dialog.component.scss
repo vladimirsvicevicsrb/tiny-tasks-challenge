@@ -64,3 +64,36 @@
   margin-bottom: 0px;
   margin-top: -15px;
 }
+
+.status-container {
+  margin-top: 8px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  mat-icon {
+    &.completed {
+      color: #4caf50;
+    }
+  }
+  
+  span {
+    &.completed {
+      color: #4caf50;
+      font-weight: 500;
+    }
+  }
+}
+
+.completion-date {
+  margin-top: 4px;
+  padding-left: 32px;
+  
+  small {
+    color: #666;
+    font-size: 12px;
+  }
+}

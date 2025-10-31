@@ -1,6 +1,7 @@
 package com.coyoapp.tinytask.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,17 @@ public class TaskResponse {
   /** Due date of the task. */
   @Schema(description = "Due date of the task", type = "string", example = "2025-02-01T13:00:00")
   private LocalDateTime dueDate;
+
+  /** Completion status of the task. */
+  @Schema(description = "Whether the task is completed", example = "false")
+  private boolean completed;
+
+  /** Date and time when the task was completed. */
+  @Schema(
+      description = "Completion timestamp of the task",
+      type = "string",
+      example = "2025-02-01T13:00:00")
+  private Instant completedAt;
 
   private Set<TaskFileResponse> files;
 }

@@ -7,5 +7,7 @@ export interface Task {
   id: string;
   name: string;
   dueDate?: string;
+  completed: boolean;
+  completedAt?: string;
   files?: TaskFile[];
 }

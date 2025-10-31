@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -71,5 +72,40 @@ public class TaskService {
     }
 
     taskRepository.deleteById(taskId);
+  }
+
+  /**
+   * Toggles the completion status of a task.
+   *
+   * @param taskId The ID of the task to toggle completion status.
+   * @return The updated task response object.
+   * @throws TaskNotFoundException if a task with the provided ID is not found in the database.
+   */
+  @Transactional
+  public TaskResponse toggleTaskCompletion(String taskId) {
+    if (!taskRepository.existsById(taskId)) {
+      throw new TaskNotFoundException("Task with id %s not found".formatted(taskId));
+    }
+
+    final Task task = taskRepository.findById(taskId).orElseThrow();
+
+    // Toggle completion status
+    boolean newCompletedStatus = !task.isCompleted();
+    task.setCompleted(newCompletedStatus);
+
+    // Set or clear completion timestamp
+    if (newCompletedStatus) {
+      task.setCompletedAt(java.time.Instant.now());
+    } else {
+      task.setCompletedAt(null);
+    }
+
+    final Task savedTask = taskRepository.save(task);
+    log.debug(
+        "toggled completion status for task: {} to {}",
+        savedTask.getName(),
+        savedTask.isCompleted());
+
+    return taskMapper.toResponse(savedTask);
   }
 }

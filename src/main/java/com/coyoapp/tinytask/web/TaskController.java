@@ -127,4 +127,18 @@ class TaskController implements TaskControllerAPI {
     taskFileService.deleteFile(fileId);
     return ResponseEntity.noContent().build();
   }
+
+  /**
+   * Toggles the completion status of a task.
+   *
+   * @param taskId The ID of the task to toggle completion status.
+   * @return The updated task response object.
+   */
+  @Override
+  @PostMapping("tasks/{taskId}/toggle-completion")
+  public ResponseEntity<TaskResponse> toggleTaskCompletion(@PathVariable String taskId) {
+    log.debug("toggleTaskCompletion(taskId={})", taskId);
+    final TaskResponse task = taskService.toggleTaskCompletion(taskId);
+    return ResponseEntity.ok(task);
+  }
 }

@@ -1,5 +1,5 @@
 <mat-list data-cy="task-list">
-  <mat-list-item *ngFor="let task of tasks" class="mat-elevation-z1">
+  <mat-list-item *ngFor="let task of tasks" class="mat-elevation-z1" [class.completed]="task.completed">
     <mat-icon mat-list-icon>assignment</mat-icon>
     <h4 mat-line>{{ task.name }}</h4>
 
@@ -12,6 +12,12 @@
       }}
       uploaded</span
     >
+    
+    <!-- Task completion toggle -->
+    <button mat-icon-button (click)="toggleTaskCompletion(task)" [color]="task.completed ? 'accent' : 'basic'" [attr.aria-label]="task.completed ? 'Mark task as incomplete' : 'Mark task as completed'">
+      <mat-icon>{{ task.completed ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+    </button>
+    
     <button mat-icon-button (click)="openTaskDetails(task)" color="primary">
       <mat-icon>info</mat-icon>
     </button>

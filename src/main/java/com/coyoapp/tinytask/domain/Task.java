@@ -38,6 +38,12 @@ public class Task {
   @Column(name = "due_date", nullable = true)
   private LocalDateTime dueDate;
 
+  @Column(name = "completed", nullable = false)
+  private boolean completed = false;
+
+  @Column(name = "completed_at", nullable = true)
+  private Instant completedAt;
+
   @JsonManagedReference
   @OneToMany(
       mappedBy = "task",

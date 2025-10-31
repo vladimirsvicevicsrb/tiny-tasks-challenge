@@ -32,6 +32,7 @@ export class LocalTaskService implements TaskService {
             id: uuid(),
             name: taskRequest.name,
             dueDate: taskRequest.dueDate,
+            completed: false,
           };
 
           tasks.push(task);
@@ -75,5 +76,27 @@ export class LocalTaskService implements TaskService {
   deleteFile(fileId: string): Observable<void> {
     // not important for local test
     return of(null);
+  }
+
+  toggleTaskCompletion(taskId: string): Observable<Task> {
+    const tasks = this.readTasks();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    
+    if (taskIndex === -1) {
+      throw new Error(`Task with id ${taskId} not found`);
+    }
+
+    // Toggle completion status
+    tasks[taskIndex].completed = !tasks[taskIndex].completed;
+    
+    // Set completion timestamp
+    if (tasks[taskIndex].completed) {
+      tasks[taskIndex].completedAt = new Date().toISOString();
+    } else {
+      tasks[taskIndex].completedAt = undefined;
+    }
+
+    this.writeTasks(tasks);
+    return of(tasks[taskIndex]);
   }
 }

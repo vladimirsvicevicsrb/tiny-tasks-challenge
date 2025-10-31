@@ -24,6 +24,8 @@ public class TaskMapper {
         .id(task.getId())
         .name(task.getName())
         .dueDate(task.getDueDate())
+        .completed(task.isCompleted())
+        .completedAt(task.getCompletedAt())
         .files(taskFileMapper.toResponse(task.getFiles()))
         .build();
   }

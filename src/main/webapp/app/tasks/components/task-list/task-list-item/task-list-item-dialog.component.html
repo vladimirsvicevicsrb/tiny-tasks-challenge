@@ -10,23 +10,36 @@
   <form>
     <mat-form-field appearance="outline" class="full-width dialog-mat-field">
       <mat-label>Task Name</mat-label>
-      <input matInput [value]="task.name" readonly />
+      <input matInput [value]="taskData.name" readonly />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width dialog-mat-field">
       <mat-label>Due Date</mat-label>
       <input
         matInput
-        [value]="getFormattedDueDate(task.dueDate) || 'No Due Date'"
+        [value]="getFormattedDueDate(taskData.dueDate) || 'No Due Date'"
         readonly
       />
     </mat-form-field>
 
     <div class="custom-form-field full-width">
+      <div class="custom-label">Status</div>
+      <div class="status-container">
+        <div class="status-item">
+          <mat-icon [class.completed]="taskData.completed">{{ taskData.completed ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span [class.completed]="taskData.completed">{{ taskData.completed ? 'Completed' : 'In Progress' }}</span>
+        </div>
+        <div *ngIf="taskData.completed && taskData.completedAt" class="completion-date">
+          <small>Completed on: {{ formatCompletionDate(taskData.completedAt) }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="custom-form-field full-width">
       <div class="custom-label">Files</div>
       <div class="files-container">
-        <div *ngIf="task.files && task.files.length > 0">
-          <div *ngFor="let file of task.files" class="file-item">
+        <div *ngIf="taskData.files && taskData.files.length > 0">
+          <div *ngFor="let file of taskData.files" class="file-item">
             <span class="file-name"
               >{{ file.fileName }} ({{ formatFileSize(file.fileSize) }})</span
             >
@@ -57,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!task.files || task.files.length === 0" class="no-files">
+        <div *ngIf="!taskData.files || taskData.files.length === 0" class="no-files">
           No files uploaded
         </div>
       </div>

@@ -42,4 +42,11 @@ export interface TaskService {
    * @returns an empty `Observable`
    */
   deleteFile(fileId: string): Observable<void>;
+
+  /**
+   * Toggles the completion status of a task.
+   * @param taskId the ID of the task
+   * @returns an `Observable` holding the updated task
+   */
+  toggleTaskCompletion(taskId: string): Observable<Task>;
 }

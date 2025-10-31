@@ -33,4 +33,8 @@ export class DefaultTaskService implements TaskService {
     return this.http.delete<void>(this.baseUrl + "/files/" + fileId);
   }
 
+  toggleTaskCompletion(taskId: string): Observable<Task> {
+    return this.http.post<Task>(this.baseUrl + "/tasks/" + taskId + "/toggle-completion", {});
+  }
+
 }

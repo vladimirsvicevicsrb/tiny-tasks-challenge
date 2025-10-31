@@ -172,4 +172,35 @@ public interface TaskControllerAPI {
       })
   @Parameter(name = "fileId", description = "ID of the file to be deleted")
   ResponseEntity<Void> deleteFile(@PathVariable String fileId);
+
+  @Operation(
+      summary = "Toggle task completion status",
+      description =
+          "Toggles the completion status of a task. If completed, marks as incomplete and vice versa.",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Task completion status toggled successfully"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Task not found",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class),
+                    examples = {
+                      @ExampleObject(
+                          value =
+                              """
+                          {
+                              "timestamp": "2025-01-01T11:21:42.426105Z",
+                              "message": "Task with id 0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58 not found",
+                              "details": "uri=/tasks/0493d5b4-d2fa-4e5d-b4cb-2a7a0bbd3a58/toggle-completion",
+                              "fieldErrors": null
+                          }
+                          """)
+                    }))
+      })
+  @Parameter(name = "taskId", description = "ID of the task to toggle completion status")
+  ResponseEntity<TaskResponse> toggleTaskCompletion(@PathVariable String taskId);
 }
